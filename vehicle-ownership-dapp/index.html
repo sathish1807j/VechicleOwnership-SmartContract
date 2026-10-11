@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#101a2b" />
+  <title>AutoLedger — Vehicle Ownership Registry</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.5/ethers.umd.min.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="AutoLedger home"><span class="brand-mark">A</span><span>AutoLedger<small>BLOCKCHAIN VEHICLE REGISTRY</small></span></a>
+    <div class="wallet-area"><span id="networkPill" class="pill muted">Wallet not connected</span><button id="connectBtn" class="btn btn-light">Connect wallet</button></div>
+  </header>
+
+  <main id="top" class="container">
+    <section class="hero">
+      <div class="hero-copy"><p class="eyebrow">OWNERSHIP, ON-CHAIN</p><h1>Vehicle records.<br><span>Made verifiable.</span></h1><p class="hero-desc">Register a vehicle, transfer ownership securely, and inspect its ownership trail through your connected wallet.</p><div class="hero-note"><span class="dot"></span> Demo interface · EVM-compatible networks</div></div>
+      <div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="car-icon">🚘</div><div class="art-label label-top">ON-CHAIN RECORD</div><div class="art-label label-bottom">OWNER VERIFIED BY WALLET</div></div>
+    </section>
+
+    <section class="setup panel">
+      <div class="section-heading"><div><p class="eyebrow">01 / CONFIGURATION</p><h2>Connect your contract</h2></div><span class="step-tag">Required first</span></div>
+      <p class="muted-text">Paste the deployed <code>VehicleOwnership</code> contract address from Remix. The frontend uses the currently connected wallet and network.</p>
+      <div class="contract-row"><label class="sr-only" for="contractAddress">Contract address</label><input id="contractAddress" spellcheck="false" placeholder="0x… deployed contract address" /><button id="loadContractBtn" class="btn btn-primary">Load contract</button></div>
+      <p id="connectionStatus" class="status-line" role="status">Connect MetaMask, then enter your deployed contract address.</p>
+    </section>
+
+    <section class="section-heading main-heading"><div><p class="eyebrow">02 / REGISTRY OPERATIONS</p><h2>Manage vehicle records</h2></div><span class="network-caption">Transactions require wallet approval</span></section>
+    <div class="dashboard-grid">
+      <section class="panel form-panel">
+        <div class="panel-title"><span class="icon-box">＋</span><div><h3>Register a vehicle</h3><p>Create a new on-chain record</p></div></div>
+        <form id="registerForm">
+          <label for="regVin">Vehicle Identification Number (VIN)<input id="regVin" required maxlength="100" placeholder="e.g. VIN001" /></label>
+          <label for="regNumber">Registration number<input id="regNumber" required maxlength="100" placeholder="e.g. TN01AB1234" /></label>
+          <label for="regModel">Vehicle model<input id="regModel" required maxlength="100" placeholder="e.g. Honda City" /></label>
+          <button class="btn btn-primary full" type="submit">Register vehicle <span>↗</span></button>
+        </form>
+      </section>
+
+      <section class="panel form-panel">
+        <div class="panel-title"><span class="icon-box">⇄</span><div><h3>Transfer ownership</h3><p>Only the current owner can transfer</p></div></div>
+        <form id="transferForm">
+          <label for="transferVin">Vehicle VIN<input id="transferVin" required maxlength="100" placeholder="e.g. VIN001" /></label>
+          <label for="newOwner">New owner's wallet address<input id="newOwner" required spellcheck="false" placeholder="0x… recipient address" /></label>
+          <div class="hint">Use a valid wallet address. A city or person's name will not work.</div>
+          <button class="btn btn-primary full" type="submit">Transfer vehicle <span>↗</span></button>
+        </form>
+      </section>
+
+      <section class="panel lookup-panel">
+        <div class="panel-title"><span class="icon-box">⌕</span><div><h3>Vehicle details</h3><p>Look up the current registered owner</p></div></div>
+        <form id="lookupForm" class="lookup-form"><label for="lookupVin">Vehicle VIN<input id="lookupVin" required maxlength="100" placeholder="Enter registered VIN" /></label><button class="btn btn-dark" type="submit">Find vehicle</button></form>
+        <div id="vehicleResult" class="result-placeholder">Vehicle details will appear here after lookup.</div>
+      </section>
+
+      <section class="panel history-panel">
+        <div class="panel-title"><span class="icon-box">↺</span><div><h3>Ownership history</h3><p>Registration and transfer timeline</p></div></div>
+        <form id="historyForm" class="lookup-form"><label for="historyVin">Vehicle VIN<input id="historyVin" required maxlength="100" placeholder="Enter registered VIN" /></label><button class="btn btn-dark" type="submit">View history</button></form>
+        <div id="historyResult" class="result-placeholder">The ownership timeline will appear here.</div>
+      </section>
+    </div>
+
+    <section class="notice"><span class="notice-icon">ⓘ</span><p><strong>Academic prototype.</strong> This DApp records blockchain addresses and vehicle fields, but does not verify legal identity or replace official vehicle registration. Do not enter sensitive personal information.</p></section>
+    <footer><span>AutoLedger · Vehicle Ownership Transfer Smart Contract</span><span>Built with Solidity + ethers.js</span></footer>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
